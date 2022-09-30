@@ -19,6 +19,7 @@ import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
 import inet.node.ethernet.EtherSwitch;
 import inet.node.inet.StandardHost;
 import ned.DatarateChannel;
+import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 
 network WiredNetworkA
 {
@@ -31,9 +32,9 @@ network WiredNetworkA
             datarate = 1Gbps;
         }
     submodules:
-        client1[n]: StandardHost {
-                @display("i=device/pc;p=100,100");
-            }
+        client1[n1]: StandardHost {
+            @display("i=device/pc;");
+        }
         etherSwitch1: EtherSwitch {
             @display("p=200,150");
         }
@@ -45,6 +46,9 @@ network WiredNetworkA
         }
         configurator: Ipv4NetworkConfigurator {
             @display("p=50,50;is=s");
+        }
+        visualizer: IntegratedCanvasVisualizer {
+            @display("p=50,150");
         }
     connections:
         centerSwitch.ethg++ <--> ethline <--> server.ethg++;
@@ -60,10 +64,15 @@ network WiredNetworkB extends WiredNetworkA
 {
     parameters:
         int n2 = default(20);
-
+    types:
+        channel ethline extends DatarateChannel
+        {
+            delay = 100us;
+            datarate = 1Gbps;
+        }
     submodules:
         client2[n2]: StandardHost {
-            @display("i=device/pc;p=350,450");
+            @display("i=device/pc;");
         }
         etherSwitch2: EtherSwitch {
             @display("p=350,350");
@@ -78,15 +87,21 @@ network WiredNetworkB extends WiredNetworkA
 
 network WiredNetworkC extends WiredNetworkB
 {
+    
     parameters:
         int n3 = default(20);
-
+    types:
+        channel ethline extends DatarateChannel
+        {
+            delay = 100us;
+            datarate = 1Gbps;
+        }
     submodules:
         client3[n3]: StandardHost {
             @display("i=device/pc;");
         }
         etherSwitch3: EtherSwitch {
-            @display("p=150,300");
+            @display("p=200,350");
         }
     connections:
         centerSwitch.ethg++ <--> ethline <--> etherSwitch3.ethg++;
@@ -98,15 +113,21 @@ network WiredNetworkC extends WiredNetworkB
 
 network WiredNetworkD extends WiredNetworkC
 {
+    
     parameters:
         int n4 = default(20);
-
+    types:
+        channel ethline extends DatarateChannel
+        {
+            delay = 100us;
+            datarate = 1Gbps;
+        }
     submodules:
         client4[n4]: StandardHost {
             @display("i=device/pc;");
         }
         etherSwitch4: EtherSwitch {
-            @display("p=550,300");
+            @display("p=550,350");
         }
     connections:
         centerSwitch.ethg++ <--> ethline <--> etherSwitch4.ethg++;
