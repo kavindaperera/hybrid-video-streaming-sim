@@ -101,7 +101,8 @@ network WiredNetwork extends SwitchNetwork
 network HybridNetworkScenario1 extends SwitchNetwork
 {
     parameters:
-        int n1 = default(10);
+        int n = 10;
+        int n1 = default(0);
         int n2 = default(0);
         int n3 = default(0);
         int n4 = default(0);
@@ -109,8 +110,13 @@ network HybridNetworkScenario1 extends SwitchNetwork
         radioMedium: Ieee80211ScalarRadioMedium {
             @display("p=50,200;is=s");
         }
-        client1[n1]: StandardHost {
+        client1[n]: StandardHost {
             @display("i=device/pc;");
+        }
+        wirelessClient1[n2]: WirelessHost;
+        accessPoint1: AccessPoint {
+            parameters:
+                @display("p=350,50");
         }
         wirelessClient2[n2]: WirelessHost;
         accessPoint2: AccessPoint {
@@ -122,11 +128,18 @@ network HybridNetworkScenario1 extends SwitchNetwork
             parameters:
                 @display("p=500,600");
         }
+        wirelessClient4[n4]: WirelessHost;
+        accessPoint4: AccessPoint {
+            parameters:
+                @display("p=850,400");
+        }
     connections:
+        etherSwitch1.ethg++ <--> Eth1G <--> accessPoint1.ethg++;
         etherSwitch2.ethg++ <--> Eth1G <--> accessPoint2.ethg++;
         etherSwitch3.ethg++ <--> Eth1G <--> accessPoint3.ethg++;
+        etherSwitch4.ethg++ <--> Eth1G <--> accessPoint4.ethg++;
 
-        for i=0..n1-1 {
+        for i=0..n-1 {
             client1[i].ethg++ <--> Eth1G <--> etherSwitch1.ethg++;
         }
 }
