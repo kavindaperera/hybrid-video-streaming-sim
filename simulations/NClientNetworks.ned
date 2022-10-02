@@ -143,3 +143,44 @@ network HybridNetworkScenario1 extends SwitchNetwork
             client1[i].ethg++ <--> Eth1G <--> etherSwitch1.ethg++;
         }
 }
+
+network HybridNetworkScenario2 extends SwitchNetwork
+{
+    parameters:
+        int n1 = default(20);
+        int n2 = default(20);
+        int n3 = default(0);
+        int n4 = default(0);
+    submodules:
+        radioMedium: Ieee80211ScalarRadioMedium {
+            @display("p=50,200;is=s");
+        }
+                client1[n1]: StandardHost {
+            @display("i=device/pc;");
+        }
+        client2[n2]: StandardHost {
+            @display("i=device/pc;");
+        }
+        client3[n3]: StandardHost {
+            @display("i=device/pc;");
+        }
+        wirelessClient4[n4]: WirelessHost;
+        accessPoint4: AccessPoint {
+            parameters:
+                @display("p=850,400");
+        }
+    connections:
+        etherSwitch4.ethg++ <--> Eth1G <--> accessPoint4.ethg++;
+
+        for i=0..n1-1 {
+            client1[i].ethg++ <--> Eth1G <--> etherSwitch1.ethg++;
+        }
+
+        for i=0..n2-1 {
+            client2[i].ethg++ <--> Eth1G <--> etherSwitch2.ethg++;
+        }
+
+        for i=0..n3-1 {
+            client3[i].ethg++ <--> Eth1G <--> etherSwitch3.ethg++;
+        }
+}
