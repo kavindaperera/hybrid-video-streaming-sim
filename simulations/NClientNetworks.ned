@@ -149,13 +149,13 @@ network HybridNetworkScenario2 extends SwitchNetwork
     parameters:
         int n1 = default(20);
         int n2 = default(20);
-        int n3 = default(0);
+        int n3 = default(20);
         int n4 = default(0);
     submodules:
         radioMedium: Ieee80211ScalarRadioMedium {
             @display("p=50,200;is=s");
         }
-                client1[n1]: StandardHost {
+        client1[n1]: StandardHost {
             @display("i=device/pc;");
         }
         client2[n2]: StandardHost {
